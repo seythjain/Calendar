@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>color picker</title>
+</head>
+
+<body style="background-color: #222227; color: white; font-family: Quicksand, sans-serif;">
+
+    <div style="text-align: center;">
+        <h3 style="text-align: center;">
+            <div face="Comic Sans Ms">Pick a color:</div>
+        </h3>
+        <input type="color" id="color">
+    </div>
+    <div id="hexValue" face="Georgia">hex value: <p id="hex">#222227</p>
+    </div>
+
+    <script>
+        let colorInput = document.querySelector('#color');
+        let hexInput = document.querySelector('#hex');
+
+        colorInput.addEventListener('input', () => {
+            let color = colorInput.value;
+            hexInput.innerHTML = color;
+            document.body.style.backgroundColor = color;
+        });
+
+    </script>
+</body>
+
+</html>

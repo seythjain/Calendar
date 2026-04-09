@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        html {
+            font-size: 62.5%;
+            /* overflow: hidden; */
+        }
+
+        /* idk how this rlly works */
+        input[type="time"]::-webkit-calendar-picker-indicator {
+            filter: invert(100%) sepia(0%) saturate(3207%) hue-rotate(130deg) brightness(100%) contrast(100%);
+        }
+
+        #btns {
+            margin-left: 46.5%;
+            margin-top: 5%;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        p {
+            font-size: 2rem;
+        }
+
+        /* CSS */
+        .button-86 {
+            all: unset;
+            width: 100px;
+            height: 30px;
+            font-size: 16px;
+            background: transparent;
+            border: none;
+            position: relative;
+            color: #f0f0f0;
+            cursor: pointer;
+            z-index: 1;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        .button-86::after,
+        .button-86::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            z-index: -99999;
+            transition: all .4s;
+        }
+
+        .button-86::before {
+            transform: translate(0%, 0%);
+            width: 100%;
+            height: 100%;
+            background: #167e56;
+            border-radius: 10px;
+        }
+
+        .button-86::after {
+            transform: translate(10px, 10px);
+            width: 35px;
+            height: 35px;
+            background: #ffffff15;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border-radius: 50px;
+        }
+
+        .button-86:hover::before {
+            transform: translate(5%, 20%);
+            width: 110%;
+            height: 110%;
+        }
+
+        .button-86:hover::after {
+            border-radius: 10px;
+            transform: translate(0, 0);
+            width: 100%;
+            height: 100%;
+        }
+
+        .button-86:active::after {
+            transition: 0s;
+            transform: translate(0, 5%);
+        }
+
+        #navbtm {
+            bottom: 0;
+            width: 100%;
+            height: 250px;
+            box-shadow: 0 6rem 9rem rgba(0, 0, 0, 0.5);
+            z-index: 2;
+            background-color: #222227;
+            position: fixed;
+        }
+
+        #navbtm span {
+            white-space: nowrap;
+            /* prevent breaking within a span */
+            display: inline-block;
+            /* keeps it on one line */
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            /* add "..." if it's too long */
+            margin-right: 10px;
+            padding: 2px 4px;
+        }
+
+        .navhead {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 50px;
+            font-weight: 300;
+            color: #eeee;
+            margin-top: 1rem;
+            /* margin-left: 14 rem; */
+            text-align: center;
+            text-decoration: underline green;
+            z-index: 3;
+        }
+
+        .navhead3 {
+            font-family: 'Baloo Da 2', serif;
+            font-size: 20px;
+            font-weight: 300;
+            color: #eeee;
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+
+        #container {
+            width: 100%;
+            height: 100vh;
+            background-color: #12121f;
+            color: #eeeeee;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #calendar {
+            width: 45rem;
+            height: 54rem;
+            background-color: #222227;
+            box-shadow: 0 .5rem 3rem rgba(0, 0, 0, .4);
+            margin-left: 37.5%;
+            margin-top: 1%;
+            border-radius: 3%;
+            z-index: -1;
+        }
+
+        .month {
+            width: 100%;
+            height: 12rem;
+            background-color: #167e56;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.2rem;
+            text-align: center;
+            text-shadow: 0 .3rem .5rem rgba(0, 0, 0, 0.5);
+        }
+
+        .month i {
+            font-size: 2.5rem;
+            cursor: pointer;
+        }
+
+        .month h1 {
+            font-size: 3rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: .2rem;
+            margin-bottom: 1rem;
+        }
+
+        .month p {
+            font-size: 1.6rem;
+        }
+
+        .weekdays {
+            width: 100%;
+            height: 5rem;
+            padding: 0 0.4rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .weekdays div {
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: .1rem;
+            width: calc(44.2rem / 7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.5);
+        }
+
+        .days {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            padding: .2rem;
+        }
+
+        .days div {
+            font-size: 1.4rem;
+            margin: 0.3rem;
+            width: calc(40.2rem / 7);
+            height: 5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.5rem);
+            transition: background-color 0.2s;
+        }
+
+        .days:hover {
+            cursor: pointer;
+        }
+
+        .days div:hover:not(.today) {
+            background-color: #262626;
+            border: .2rem solid #777;
+            cursor: pointer;
+        }
+
+        .prev-date,
+        .next-date {
+            opacity: 0.5;
+        }
+
+        .today {
+            background-color: #167e56;
+        }
+
+        .buttons {
+            height: 3rem;
+            background-color: #12121f00;
+            color: #eeeeee;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .buttons:hover {
+            background-color: #777;
+            cursor: pointer;
+        }
+
+        #input {
+            background-color: white;
+            color: #12121f;
+            border-radius: 5%;
+            margin-top: 50px;
+            padding: 35px;
+            width: 45rem;
+            height: 54rem;
+            box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+        }
+
+        #txtarea {
+            background-color: white;
+            color: #12121f;
+            border-radius: 10%;
+            margin-top: -100px;
+            margin-left: -467px;
+            padding: 30px;
+        }
+
+        #txtarea h2 {
+            text-align: center;
+            padding: 5%;
+        }
+
+        #close {
+            margin-right: 0;
+            margin-top: -5%;
+        }
+
+        #close:hover {
+            cursor: pointer;
+        }
+
+        #closeInput:hover {
+            cursor: pointer;
+        }
+
+        .group {
+            position: relative;
+            margin-bottom: 20px;
+            margin-top: 5px;
+            margin-left: 10px;
+            width: 250px;
+            padding: 10px 10px 0px 10px;
+            box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+        }
+
+        .textbox {
+            font-size: 18px;
+            padding: 10px 10px 5px 5px;
+            display: block;
+            width: 250px;
+            border: none;
+            border-bottom: 1px solid #757575;
+            background-color: #222227;
+            color: white;
+        }
+
+        .textbox:focus {
+            outline: none;
+            color: white;
+        }
+
+        .group label {
+            color: #fff;
+            font-size: 18px;
+            font-weight: normal;
+            position: absolute;
+            pointer-events: none;
+            left: 5px;
+            top: 10px;
+            transition: 0.2s ease all;
+        }
+
+        .textbox:focus~label,
+        .textbox:valid~label {
+            top: -10px;
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .bar {
+            position: relative;
+            display: block;
+            width: 250px;
+        }
+
+        .bar:before,
+        .bar:after {
+            content: '';
+            height: 2px;
+            width: 0;
+            bottom: 1px;
+            position: absolute;
+            background: #5264AE;
+            transition: 0.2s ease all;
+        }
+
+        .bar:before {
+            left: 50%;
+        }
+
+        .bar:after {
+            right: 50%;
+        }
+
+        .textbox:focus~.bar:before,
+        .textbox:focus~.bar:after {
+            width: 50%;
+        }
+
+        .highlight {
+            position: absolute;
+            height: 60%;
+            width: 100px;
+            top: 25%;
+            left: 0;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .textbox:focus~.highlight {
+            animation: inputHighlighter 0.3s ease;
+        }
+
+        @keyframes inputHighlighter {
+            from {
+                background: #5264AE;
+            }
+
+            to {
+                width: 0;
+                background: transparent;
+            }
+        }
+
+        #stopSound:hover {
+            color: #167e56;
+            cursor: pointer;
+        }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body style="background-color: #222227;">
+
+    <div id="login" style="margin-top: 5rem; margin-left: 1rem;">
+        <div class="group">
+            <input type="text" class="textbox" name="uname" id="uname" required>
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>Username</label>
+        </div>
+        <br>
+        <div class="group">
+            <input type="password" class="textbox" name="password" id="pwd" required>
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>Password</label>
+        </div>
+        <br>
+        <br>
+        <button class="button-86" onclick="init()" style="margin-left: 1rem;">Submit</button>
+    </div>
+
+
+
+    <div id="container" style="display: none;">
+        <div id="calendar">
+
+            <div id="btns"
+                style="text-align: center; width: inherit; margin-left: 0%; display: flex; justify-content: space-evenly;">
+                <p id="go_to_today" class="buttons">Today</p>
+
+                <p onclick="showInputForm('POST')" id="createEvent" class="buttons">Create</p>
+
+                <p onclick="showInputForm('DELETE')" id="deleteEvent" class="buttons">Delete</p>
+            </div>
+
+            <div class="month">
+                <i class="fas fa-angle-left" id="prev"></i>
+                <div class="date">
+                    <h1></h1>
+                    <p></p>
+                </div>
+                <i class="fas fa-angle-right" id="next"></i>
+            </div>
+            <div class="weekdays">
+                <div>Sun</div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+            </div>
+            <div class="days"></div>
+
+        </div>
+
+
+        <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// this needs to be the get() not a hard coded message -->
+        <div id="txtarea" style="display: none;">
+            <h2><span style="font-size: xx-large;" id="close">&times;</span></h2>
+            <h2 id="numberOfToday"></h2>
+            <hr>
+            <div style="text-align: center; font-family: Baloo Da 2, serif; font-size: medium;">
+
+            </div>
+        </div>
+
+        <div id="input" style="display: none; text-align: center;background-color: #222227;">
+            <div>
+                <p style="font-size: 2rem; color: #c29525;" id="closeInput">&times;</p>
+                <hr>
+            </div>
+            <br>
+            <div id="feilds" style="display: inherit; visibility: hidden; justify-content: center;">
+
+                <div class="group">
+                    <input type="number" class="textbox" name="month" id="month" required>
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label>MM</label>
+                </div>
+
+                <div class="group">
+                    <input type="number" class="textbox" name="day" id="day" required>
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label>DD</label>
+                </div>
+
+                <div class="group">
+                    <input type="number" name="year" class="textbox" id="year" required>
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label>YYYY</label>
+                </div>
+
+                <div class="group">
+                    <input type="time" name="time" class="textbox" id="time" style="color:white" required>
+                    <span class="highlight" style="color:white"></span>
+                    <span class="bar"></span>
+                </div>
+
+                <div class="group">
+                    <input type="text" class="textbox" name="eventName" id="eventName" required>
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label>Event Name</label>
+                </div>
+                <br>
+                <button onclick="addelete('DELETE')" id="del" style="margin-left: 25%; display: none;"
+                    class="button-86">Delete</button>
+                <button onclick="addelete('POST')" id="save" style="margin-left: 25%;" class="button-86">Save</button>
+                <br>
+            </div>
+            <br>
+        </div>
+
+        <nav id="navbtm">
+            <br>
+            <p class="navhead" id="stopSound" title="Stop sound" onclick="bellOff()"
+                style="text-decoration: underline #167e56;">All Events</p>
+            <br>
+            <br>
+            <div class="navhead3" id="todayEvents"></div>
+            <div class="navhead3" style="color: #167e56;" id="databaseData"></div>
+        </nav>
+        <audio id="bell">
+            <source src="{{ url_for('served_audio')}}" type="audio/wav">
+            Your browser does not support the audio element.
+        </audio>
+
+        <hr style="margin-top: 200px;">
+    </div>
+    </div>
+    <script>
+
+        let initialized = false;
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' && !initialized) {
+                init();
+                initialized = true;
+            }
+        });
+
+        let stylePg = setInterval(() => {
+            // all of the styling stuff to fit the screen
+            let screenWidth = window.innerWidth
+            let screenHeight = window.innerHeight
+            let fontScale
+            if (screenWidth > 1130) {
+                fontScale = (screenWidth) / (1920)
+            } else {
+                fontScale = 1130 / 1920
+            }
+
+            document.querySelector('html').style.fontSize = 75 * fontScale + '%';
+            // fontsize = my monitors font size% * (the width * height of their device) / (the width * height of my device)
+            // this is used to scale the font to the other devices needs
+
+            let calWidth = 45 * 12 * fontScale;
+            let createEventWidth = (45 * 12) * fontScale;
+            // the "+ 70" is to account for padding
+            document.getElementById('calendar').style.marginLeft = (screenWidth - calWidth) / 2 + 'px';
+            document.getElementById('input').style.marginLeft = (screenWidth - createEventWidth) / 2 + 'px';
+        }, 1000);
+
+        let s = 10
+        let updateConst = setInterval(() => {
+            get();
+        }, 1000 * s);
+
+        const date = new Date();
+
+
+        const renderCalendar = () => {
+
+            date.setDate(1)
+
+            // console.log(date.getDay())
+
+            const firstDayIndex = date.getDay();
+
+            // Previous Month's Last Date
+            const prevLastDate = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
+
+            const monthDays = document.querySelector('.days')
+
+            const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+
+            const lastDayIndex = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDay();
+
+            const nextDays = 7 - lastDayIndex - 1;
+
+            const allMonths = [
+                "Janurary",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December"
+            ]
+
+            document.querySelector('.date h1').innerHTML = allMonths[date.getMonth()];
+
+            document.querySelector('.date p').innerHTML = date.getFullYear();
+
+            var days = "";
+
+            for (let x = firstDayIndex; x > 0; x--) {
+                days += `<div class="prev-date">${prevLastDate - x + 1}</div>`;
+            }
+
+            for (let i = 1; i <= lastDay; i++) {
+                if (i === new Date().getDate() && date.getMonth() === new Date().getMonth() && date.getFullYear() === new Date().getFullYear()) {
+                    days += `<div class="today" id="a1${i}">${i}</div>`;
+                } else {
+                    days += `<div id="a${i}">${i}</div>`;
+                }
+                //days += `<div>${i}</div>`;
+            }
+
+            for (let j = 1; j <= nextDays; j++) {
+                days += `<div class="next-date">${j}</div>`;
+            }
+            monthDays.innerHTML = days;
+            // render calendar
+        }
+
+        async function start_execution() {
+            let data = await get();
+
+            document.getElementById("prev").addEventListener('click', () => {
+                date.setMonth(date.getMonth() - 1);
+                renderCalendar();
+            })
+
+            document.querySelector("#next").addEventListener('click', () => {
+                date.setMonth(date.getMonth() + 1);
+                renderCalendar();
+            })
+
+
+            document.querySelector("#go_to_today").addEventListener('click', () => {
+                date.setFullYear(new Date().getFullYear())
+                date.setMonth(new Date().getMonth())
+                date.setDate(new Date().getDate())
+                renderCalendar();
+            })
+
+            renderCalendar()
+
+            // document.querySelector('.today').addEventListener('click', () => {
+            //     const d = new Date
+
+            //     var txtarea = document.getElementById('txtarea').getElementsByTagName('div')[0]
+            //     txtarea.style.display = 'block';
+            //     var spans = document.getElementById('navbtm').getElementsByTagName('span');
+
+            //     for (let i = 0; i < data.name.length; i++) {
+            //         var day = spans[i].innerHTML.split(' | ')[1].split('/')[1];
+            //         var month = spans[i].innerHTML.split(' | ')[1].split('/')[0];
+            //         var year = spans[i].innerHTML.split(' | ')[1].split('/')[2];
+            //         var spani = spans[i].innerHTML;
+
+            //         if ( /*date of event == today date*/ day == d.getDate() && parseInt(month) - 1 == d.getMonth() && year == d.getFullYear()) {
+            //             if (data.name[i] == username) {
+            //                 let newEle = document.createElement('span');
+            //                 newEle.append(`     •   ${data.name[i]} | ${data.month[i]}/${data.day[i]}/${data.year[i]} | ${data.time[i][0]} | ${data.eventName[i]}`);
+            //                 document.getElementById('databaseData').append(newEle);
+            //             }
+            //         }
+            //     }
+            // });
+
+            document.getElementById("close").addEventListener("click", function () {
+                document.getElementById('txtarea').style.display = "none";
+            })
+
+            document.getElementById("closeInput").addEventListener("click", function () {
+                // document.getElementById('input').style.display = "none";
+                // document.getElementById('calendar').style.display = "block";
+                document.getElementById('feilds').style.visibility = 'hidden';
+
+                document.getElementById('input').animate(
+                    [
+
+                        { width: '355px', height: '488px' },
+                        { width: '0rem', height: '0rem' }
+                    ],
+                    {
+                        duration: 200,
+                        easing: "ease-in-out",
+                        fill: "forwards"
+                    }
+                )
+                document.getElementById('calendar').style.display = "block";
+                document.querySelector('#calendar').animate(
+                    [
+                        { width: '0rem', height: '0rem' },
+                        { width: '45rem', height: '54rem' }
+                    ],
+                    {
+                        duration: 500,
+                        easing: "ease-in-out",
+                        fill: "forwards"
+                    }
+                )//
+                setTimeout(() => {
+                    document.querySelector('#input').style.display = 'none';
+                }, 200);
+                document.getElementById('btns').style.visibility = 'visible';
+
+
+            })
+
+            var today = new Date()
+
+            document.getElementById('numberOfToday').innerHTML = today;
+            // this is so the user can see all of their events
+            get();
+        }
+
+
+
+        function showInputForm(method) {
+            document.querySelector('#calendar').animate(
+                [
+                    { width: '45rem', height: '54rem' },
+                    { width: '0rem', height: '0rem' }
+                ],
+                {
+                    duration: 200,
+                    easing: "ease-in-out",
+                    fill: "forwards"
+                }
+            )
+            document.getElementById('input').style.display = "block";
+
+            document.getElementById('input').animate(
+                [
+                    { width: '0px', height: '0px' },
+                    { width: '355px', height: '488px' }
+                ],
+                {
+                    duration: 500,
+                    easing: "ease-in-out",
+                    fill: "forwards"
+                }
+            )//
+            setTimeout(() => {
+                document.querySelector('#calendar').style.display = 'none';
+            }, 200);
+            setTimeout(() => {
+                document.getElementById('feilds').style.visibility = 'visible';
+            }, 450);
+
+            if (method == 'DELETE') {
+                document.getElementById('save').style.display = 'none';
+                document.getElementById('del').style.display = 'block';
+            } else if (method == 'POST') {
+                document.getElementById('save').style.display = 'block';
+                document.getElementById('del').style.display = 'none';
+            }
+
+            document.getElementById('btns').style.visibility = 'hidden';
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////// only execut if funct works
+
+        let username;
+
+
+        function getuser(lostname) {
+            return fetch('/adduser', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    for (let i = 0; i < data.name.length; i++) {
+                        if (data.name[i] == lostname) {
+                            let a = data;
+                            return [a, i]
+                        }
+                    }
+                    return false
+                    // aka there is no user wiht that name in the db
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function getthemes(lostname) {
+            return fetch('/themes', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    for (let i = 0; i < data.name.length; i++) {
+                        if (data.names[i] == lostname) {
+                            return true
+                        }
+                    }
+                    return false
+                    // aka there is no user wiht that name in the db
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        async function init() {
+            // console.log(await getuser('test'))\
+            initialized = true;
+            var data = await getuser(document.getElementById('uname').value);
+            var actual_pwd = data[0];
+            if (actual_pwd == undefined) {
+                return alert("incorrect username or password")
+            }
+            if (getthemes(document.getElementById('uname').value)) {
+                let color = prompt("Enter color theme for calendar (color can be chosen from http://10.0.0.14:5000/colorPicker): ")
+                if (color) {
+                    document.getElementsByClassName('month')[0].style.backgroundColor = color
+                }
+            }
+            var i = data[1];
+            if (actual_pwd.pwd[i] == String(document.getElementById('pwd').value)) {
+                document.getElementById('login').style.display = 'none';
+                document.getElementById('container').style.display = 'block';
+                username = document.getElementById('uname').value;
+                let bckcolor = '#12121f';
+                if (data[0].ld[i] == 'light') {
+                    bckcolor = 'white';
+                    // document.getElementById('go_to_today').style.color = 'black';
+                    // document.getElementById('createEvent').style.color = 'black';
+                    // document.getElementById('deleteEvent').style.color = 'black';
+                }
+                document.body.style.backgroundColor = bckcolor;
+                document.getElementById('container').style.backgroundColor = bckcolor;
+                start_execution();
+                return
+            }
+
+            return alert("incorrect username or password")
+
+        }
+
+        function addelete(methodused) {
+            let data_sent = { "name": username, "month": document.getElementById('month').value, "day": document.getElementById('day').value, "year": document.getElementById('year').value, "time": document.getElementById('time').value, "eventName": document.getElementById('eventName').value }
+            fetch('/adminadmin', {
+                method: methodused,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data_sent)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // document.getElementById('response').textContent = data.message;
+                    document.getElementById('databaseData').innerHTML = '';
+                    document.getElementById('todayEvents').innerHTML = '';
+                    // for i in # of events
+                    for (let i = 0; i < data.name.length; i++) {
+                        let d = new Date()
+                        if (data.name[i] == username) {
+                            let newEle = document.createElement('span');
+                            if (parseInt(data.time[i][0].split(":")[0]) < 12) {
+                                newEle.append(`     •   ${data.name[i]} | ${data.month[i]}/${data.day[i]}/${data.year[i]} | ${data.time[i][0]} AM | ${data.eventName[i]}`);
+                            } else {
+                                newEle.append(`     •   ${data.name[i]} | ${data.month[i]}/${data.day[i]}/${data.year[i]} | ${parseInt(data.time[i][0].split(":")[0]) % 12}:${data.time[i][0].split(":")[1]} PM | ${data.eventName[i]}`);
+                            }
+                            if (data.day[i] == d.getDate() && parseInt(data.month[i]) - 1 == d.getMonth() && data.year[i] == d.getFullYear()) {
+                                document.getElementById('todayEvents').appendChild(newEle);
+                            } else {
+                                newEle.setAttribute("style", "color:#167e56;");
+                                document.getElementById('databaseData').append(newEle);
+                            }
+                        }
+                    }
+                    bell();
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // get events
+        function get() {
+            fetch('/adminadmin', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('databaseData').innerHTML = '';
+                    document.getElementById('todayEvents').innerHTML = '';
+                    // for i in # of events
+                    for (let i = 0; i < data.name.length; i++) {
+                        let d = new Date()
+                        if (data.name[i] == username) {
+                            let newEle = document.createElement('span');
+                            print
+                            if (parseInt(data.time[i][0].split(":")[0]) < 12) {
+                                newEle.append(`     •   ${data.name[i]} | ${data.month[i]}/${data.day[i]}/${data.year[i]} | ${data.time[i][0]} AM | ${data.eventName[i]}`);
+                            } else {
+                                newEle.append(`     •   ${data.name[i]} | ${data.month[i]}/${data.day[i]}/${data.year[i]} | ${parseInt(data.time[i][0].split(":")[0]) % 12}:${data.time[i][0].split(":")[1]} PM | ${data.eventName[i]}`);
+                            }
+                            if (data.day[i] == d.getDate() && parseInt(data.month[i]) - 1 == d.getMonth() && data.year[i] == d.getFullYear()) {
+                                document.getElementById('todayEvents').appendChild(newEle);
+                            } else {
+                                newEle.setAttribute("style", "color:#167e56;");
+                                document.getElementById('databaseData').append(newEle);
+                            }
+                        }
+                    }
+                    bell();
+                    return data
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+
+        var soundplaying = false;
+
+        function bellOff() {
+            soundplaying = false;
+            const audio = new Audio("http://localhost:5000/audio");
+            audio.loop = false;
+            audio.muted = true;
+            clearInterval(sound)
+        }
+
+        let sound;
+
+        function bell() {
+            var spans = document.getElementById('navbtm').getElementsByTagName('span')
+            var playsound = setInterval(() => {
+                var d = new Date
+
+                if (spans.length != 0) {
+                    if (soundplaying) {
+                        return
+                    }
+                    for (let i = 0; i < spans.length; i++) {
+                        var day = spans[i].innerHTML.split(' | ')[1].split('/')[1]
+                        var month = spans[i].innerHTML.split(' | ')[1].split('/')[0]
+                        var year = spans[i].innerHTML.split(' | ')[1].split('/')[2]
+                        var ampm;
+                        if (spans[i].innerHTML.split(' | ')[2].split(':')[0] >= 12) {
+                            ampm = 'PM';
+                        } else {
+                            ampm = 'AM';
+                        }
+
+                        if ( /*date of event == today date*/ day == d.getDate() && parseInt(month) - 1 == d.getMonth() && year == d.getFullYear() && (parseInt(spans[i].innerHTML.split(' | ')[2].split(':')[0]) - 1) % 12 + 1 == parseInt(d.toLocaleTimeString().split(':')[0]) && spans[i].innerHTML.split(' | ')[2].split(':')[1] == d.toLocaleTimeString().split(':')[1] && ampm == d.toLocaleTimeString().split(':')[2].slice(3, 5)) {
+
+                            sound = setInterval(() => {
+                                const audio = new Audio("http://localhost:5000/audio");
+                                audio.loop = true;
+                                audio.play();
+                                soundplaying = true;
+                                audio.muted = false;
+                            }, 3500);
+
+                            clearInterval(playsound);
+                            break
+
+                        }
+
+                    }
+                }
+            }, 60);
+        }
+
+        bell();
+    </script>
+</body>
+
+</html>
